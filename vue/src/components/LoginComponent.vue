@@ -66,8 +66,8 @@ const loginform = ref(false);
 </script>
 
 <template>
-  <div class="w-screen h-screen flex justify-center items-center fixed top-0 left-0 z-40">
-    <div class="w-1/2 flex flex-col">
+  <div class="w-screen h-screen flex justify-center items-center fixed top-0 left-0 z-40 before-shadow">
+    <div class="w-1/2 flex flex-col z-50">
       <div class="flex items-center justify-evenly w-full bg-slate-700 text-white">
         <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': loginform }" @click="loginform = true">Login</h2>
         <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': !loginform }" @click="loginform = false">Register</h2>
@@ -88,7 +88,7 @@ const loginform = ref(false);
         <input class="w-1/2 text-black p-3" placeholder="First name" v-model="firstname"/>
         <input class="w-1/2 text-black p-3" placeholder="Last name" v-model="lastname"/>
         <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
-        <input class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
+        <input class="w-1/2 text-black p-3" type="password" placeholder="password" v-model="password"/>
         <button @click="register" class="bg-blue-600 w-1/2 p-3">Register</button>
         <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
         <p>{{ token }}</p>
