@@ -1,9 +1,10 @@
 <script setup>
-import {ref, defineExpose, onMounted} from "vue";
+import {ref, defineExpose, defineEmits, onMounted} from "vue";
 import axios from "axios";
 import {Delta} from "@vueup/vue-quill";
 import {useToast} from "vue-toast-notification";
 
+const emit = defineEmits(["document-renamed"]);
 const current_document = ref(0);
 const current_document_title = ref("Test");
 const quilleditor = ref(null);
@@ -136,6 +137,7 @@ function handleRename() {
     }).then((res) => {
       console.log(res.data);
       $toast.success("Document renamed");
+      emit("document-renamed");
     }).catch((err) => {
       console.log(err);
     });

@@ -12,6 +12,7 @@ const show_document_sidebar = ref(true);
 const $toast = useToast();
 const logged_in = ref(false);
 const rte = ref(null);
+const docside = ref(null);
 onMounted(() => {
   if (localStorage.getItem("token")) {
     show_login.value = false;
@@ -49,7 +50,7 @@ function documentSelected(document) {
     <div class="flex w-full h-calc z-10 absolute top-200" v-show="show_document_sidebar">
       <DocumentSidebar @select-document="(document)=> {documentSelected(document)}" ref="docside"></DocumentSidebar>
       <div class="h-full w-full flex justify-center items-center">
-        <RTE ref="rte" v-show="show_rte"/>
+        <RTE ref="rte" v-show="show_rte" @document-renamed="this.$refs.docside.load();"/>
       </div>
     </div>
   </div>
