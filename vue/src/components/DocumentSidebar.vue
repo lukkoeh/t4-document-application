@@ -133,7 +133,6 @@ function changeDocument(doc) {
 <template>
   <div class="w-1/5 h-full text-center text-white py-10 flex flex-col gap-5 items-center bg-slate-700">
     <h1 class="text-2xl">Your Documents</h1>
-    <button @click="load" class="bg-blue-600 p-3 w-4/5 rounded">Refresh</button>
     <div class="overflow-y-scroll h-4/5 w-full flex flex-col items-center gap-5 scrollbar-hide">
       <div @click="changeDocument(document)" v-for="document in documents" :key="document.document_id" class="w-4/5 bg-slate-900 rounded-2xl p-5 flex flex-col gap-2">
         <p>{{ document.document_title }}</p>
@@ -144,11 +143,12 @@ function changeDocument(doc) {
         </div>
       </div>
     </div>
-    <button @click="document_dialog = true" class="bg-blue-600 p-5 w-4/5">Create Document</button>
+    <button @click="load" class="bg-yellow-600 p-2 w-4/5 rounded">Refresh</button>
+    <button @click="document_dialog = true" class="bg-blue-600 p-2 w-4/5 rounded">Create</button>
   </div>
-  <div v-if="document_dialog" class="fixed left-0 top-0 w-full h-full flex items-center justify-center z-10">
-    <div class="bg-slate-700 w-1/2 h-1/3 p-5 flex flex-col justify-center gap-5">
-      <h2 class="text-white text-3xl">Create a new document</h2>
+  <div v-if="document_dialog" class="fixed left-0 top-0 w-full h-full flex items-center justify-center z-10 bg-black opacity-70">
+    <div class="bg-slate-700 w-1/2 h-1/3 p-5 flex flex-col justify-center gap-5 opacity-100 rounded">
+      <h2 class="text-white text-2xl">Create a new document</h2>
       <input class="p-3 text-white bg-slate-800 w-full" v-model="newdocname" placeholder="New Document name"/>
       <div class="flex justify-between">
         <button @click="document_dialog = false" class="w-1/3 bg-blue-600 text-white p-3 rounded">Cancel</button>
@@ -156,9 +156,9 @@ function changeDocument(doc) {
       </div>
     </div>
   </div>
-  <div v-if="share_dialog" class="fixed left-0 top-0 w-full h-full flex items-center justify-center z-40">
-    <div class="bg-slate-700 w-1/2 h-1/3 p-5 flex flex-col justify-center gap-5">
-      <h2 class="text-white text-3xl">Share this Document: {{current_share_doc_id}}</h2>
+  <div v-if="share_dialog" class="fixed left-0 top-0 w-full h-full flex items-center justify-center z-40 bg-black opacity-70">
+    <div class="bg-slate-700 w-1/2 h-1/3 p-5 flex flex-col justify-center gap-5 opacity-100 rounded">
+      <h2 class="text-white text-3xl">Share this Document: {{ current_share_doc_id }}</h2>
       <p class="text-white">Tip: People can find their share ID in their Profile View.</p>
       <input class="p-3 text-white bg-slate-800 w-full" v-model="target_share_id" placeholder="Target Share ID"/>
       <div class="flex justify-between">

@@ -10,7 +10,7 @@ const lastname = ref("");
 const email = ref("");
 
 const editmode = ref(false);
-const editop = computed(()=> {
+const editop = computed(() => {
   return editmode.value ? "Save" : "Edit";
 })
 
@@ -20,11 +20,11 @@ const new_pw = ref("");
 const new_pw_confirm = ref("");
 const user_id = ref(localStorage.getItem("user_id"));
 const u_sure = ref(false);
-const deletemode_button = computed(()=> {
+const deletemode_button = computed(() => {
   return u_sure.value ? "DO IT NOW" : "Delete Account";
 })
 
-onMounted(()=>{
+onMounted(() => {
   console.log("mounted")
   if (!localStorage.getItem("token")) {
     console.log("no token found")
@@ -103,8 +103,7 @@ function updatePassword() {
     if (err.response.status === 400) {
       $toast.error("Old password is incorrect");
       return;
-    }
-    else {
+    } else {
       $toast.error("Something went wrong");
       console.log(err);
       return;
@@ -116,7 +115,7 @@ function handleAccountDeletion() {
   u_sure.value = !u_sure.value;
   if (u_sure.value) {
     return;
-  }else {
+  } else {
     let tempurl = "http://localhost:10001/user/" + localStorage.getItem("user_id");
     axios({
       method: "delete",
@@ -138,38 +137,42 @@ function handleAccountDeletion() {
 </script>
 
 <template>
-  <div class="flex w-screen h-screen justify-center items-center fixed left-0 top-0 z-40">
-    <div v-if="passwordchange" class="w-2/3 h-2/3 bg-slate-900 p-10 text-white relative rounded">
+  <div class="flex w-screen h-screen justify-center items-center fixed left-0 top-0 z-40 before-shadow">
+    <div v-if="passwordchange" class="w-2/3 h-2/3 bg-slate-900 p-10 text-white relative rounded opacity-100 z-20">
       <h2 class="text-3xl text-white mb-5">Change Password</h2>
       <div class="flex flex-col gap-5">
         <input class="p-3 text-white bg-slate-700 w-full" v-model="old_pw" placeholder="Old password"/>
-        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw" placeholder="New password" :class="pw_match"/>
-        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw_confirm" placeholder="Confirm new password" :class="pw_match"/>
+        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw" placeholder="New password"
+               :class="pw_match"/>
+        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw_confirm"
+               placeholder="Confirm new password" :class="pw_match"/>
       </div>
       <div class="absolute bottom-5 right-5 flex justify-between gap-5 w-1/3">
         <button @click="passwordchange = !passwordchange" class="bg-blue-600 p-3 rounded w-full">Cancel</button>
         <button @click="updatePassword" class="bg-blue-600 p-3 rounded w-full">Update password</button>
       </div>
     </div>
-    <div v-else class="w-2/3 h-2/3 bg-slate-800 p-10 text-white relative rounded">
+    <div v-else class="w-2/3 h-2/3 bg-slate-800 p-10 text-white relative rounded opacity-100 z-20">
       <h2 class="text-3xl text-white mb-5">Profile</h2>
       <div v-if="editmode" class="flex flex-col gap-5">
         <input class="p-3 text-white bg-slate-700 w-full" v-model="firstname" placeholder="First name"/>
         <input class="p-3 text-white bg-slate-700 w-full" v-model="lastname" placeholder="Last name"/>
         <input class="p-3 text-white bg-slate-700 w-full" v-model="email" placeholder="E-Mail"/>
       </div>
-      <div v-else class="flex flex-col gap-5">
-        <p class="p-3 text-white bg-slate-700 w-full">First name: {{firstname}}</p>
-        <p class="p-3 text-white bg-slate-700 w-full">Last name: {{lastname}}</p>
-        <p class="p-3 text-white bg-slate-700 w-full">E-Mail: {{email}}</p>
-        <p class="p-3 text-white bg-slate-700 w-full">Your Share-ID: {{user_id}}</p>
+      <div v-else class="flex flex-col gap-5 opacity-100">
+        <p class="p-3 text-white bg-slate-700 w-full">First name: {{ firstname }}</p>
+        <p class="p-3 text-white bg-slate-700 w-full">Last name: {{ lastname }}</p>
+        <p class="p-3 text-white bg-slate-700 w-full">E-Mail: {{ email }}</p>
+        <p class="p-3 text-white bg-slate-700 w-full">Your Share-ID: {{ user_id }}</p>
         <p class="text-white w-full">Tip: Use this Share-ID to get Documents from other Users</p>
       </div>
-      <div class="flex absolute right-5 bottom-5 gap-5 justify-between w-1/4">
-        <button @click="()=> {if (editmode) {save();}editmode = !editmode; }" class="bg-blue-600 p-3 rounded w-full">{{ editop }}</button>
+      <div class="flex absolute right-5 bottom-5 gap-5 justify-between w-1/4 opacity-100 z-20">
+        <button @click="()=> {if (editmode) {save();}editmode = !editmode; }" class="bg-blue-600 p-3 rounded w-full">
+          {{ editop }}
+        </button>
         <button @click="this.$emit('close-profile-view')" class="bg-blue-600 p-3 rounded w-full">Close</button>
       </div>
-      <div class="flex absolute left-5 bottom-5 gap-5 justify-between w-1/3">
+      <div class="flex absolute left-5 bottom-5 gap-5 justify-between w-1/3 opacity-100">
         <button class="bg-red-600 p-3 rounded w-full" @click="handleAccountDeletion">{{ deletemode_button }}</button>
         <button @click="passwordchange = !passwordchange" class="bg-red-600 p-3 rounded w-full">Update Password</button>
       </div>
