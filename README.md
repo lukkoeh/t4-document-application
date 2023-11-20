@@ -39,6 +39,7 @@ This will install the following services via docker compose:
 2. A Container for the RESTful API (php:8.2-apache)
 3. A Container for the WebSocket Server (php:8.2-cli)
 4. A Container for the Database (mariadb:latest)
+5. A Container for swagger UI to view the OpenAPI Specification (swaggerapi/swagger-ui)
 
 ### Where do I find the Database Layout?
 The database layout is located at './layout.sql' and can be imported manually.
@@ -53,6 +54,8 @@ The API is accessible via http://localhost:10001
 The WebSocket Server is accessible via http://localhost:10002
 
 The database is accessible via http://localhost:10003
+
+Optionally, swaggerui is accessible via http://localhost:10004
 
 Make sure that port forwarding to docker works correctly on your system.
 
