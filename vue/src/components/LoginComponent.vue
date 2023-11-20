@@ -5,7 +5,6 @@ import {useToast} from "vue-toast-notification";
 const emit = defineEmits(["user-logged-in", "close-login-widget"]);
 const password = ref("");
 const email = ref("");
-const token = ref("");
 const firstname = ref("");
 const lastname = ref("");
 
@@ -23,7 +22,6 @@ function login() {
     }
   ).then((res) => {
     console.log(res.data)
-    token.value = res.data.token;
     // Save token to local storage
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("user_id", res.data.user_id);
@@ -50,7 +48,6 @@ function register() {
         data: formdata
       }
   ).then((res)=> {
-    token.value = res.data;
     // save userid to local storage
     if (res.data.user_id) {
       localStorage.setItem("user_id", res.data.user_id);
@@ -80,8 +77,6 @@ const loginform = ref(false);
         <input type="password" class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
         <button @click="login" class="bg-blue-600 w-1/2 p-3">Login</button>
         <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
-
-        <p>{{ token }}</p>
       </div>
       <!-- Register -->
       <div v-else class="bg-slate-800 text-white w-full h-full text-center p-10 flex flex-col justify-center items-center gap-5">
@@ -92,7 +87,6 @@ const loginform = ref(false);
         <input class="w-1/2 text-black p-3" type="password" placeholder="password" v-model="password"/>
         <button @click="register" class="bg-blue-600 w-1/2 p-3">Register</button>
         <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
-        <p>{{ token }}</p>
       </div>
     </div>
   </div>
