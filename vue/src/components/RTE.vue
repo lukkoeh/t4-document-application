@@ -163,10 +163,10 @@ function handleRename() {
 
 <template>
   <div class="flex flex-col w-full h-full text-white">
-    <div class="flex justify-start items-center gap-5">
-      <input class="text-2xl m-5 w-1/2 bg-slate-700 rounded p-2" :placeholder="current_document_title" v-model="current_document_title" v-if="rename_mode"/>
-      <h2 v-else class="text-3xl m-5">Edit: {{ current_document_title }}</h2>
-      <button class="bg-blue-600 rounded p-2" @click="handleRename">Rename</button>
+    <div class="flex justify-start items-center gap-3">
+      <input class="text-2xl m-5 w-1/3 bg-slate-700 rounded p-2" :placeholder="current_document_title" v-model="current_document_title" v-if="rename_mode"/>
+      <h2 v-else class="text-3xl m-5" @click="handleRename">Edit: {{ current_document_title }}</h2>
+      <button class="bg-blue-600 rounded px-8 py-3" v-if="rename_mode" @click="handleRename">Rename</button>
     </div>
     <QuillEditor @ready="editorReady" ref="quilleditor" @textChange="(delta)=> {editorChanged(delta)}"></QuillEditor>
   </div>
