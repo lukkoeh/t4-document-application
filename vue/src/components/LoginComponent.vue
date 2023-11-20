@@ -32,6 +32,7 @@ function login() {
     emit("close-login-widget");
     $toast.success("Logged in as " + res.data.user_id);
   }).catch((err) => {
+    $toast.error("Login failed, please try again")
     console.log(err);
   })
 }
@@ -75,7 +76,7 @@ const loginform = ref(false);
       <div v-if="loginform" class="bg-slate-800 text-white w-full h-full text-center p-10 flex flex-col justify-center items-center gap-5">
         <h1 class="text-3xl font-bold">Login</h1>
         <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
-        <input class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
+        <input type="password" class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
         <button @click="login" class="bg-blue-600 w-1/2 p-3">Login</button>
         <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
 
