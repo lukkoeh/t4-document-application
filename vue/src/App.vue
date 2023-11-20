@@ -48,7 +48,7 @@ function documentSelected(document) {
       </div>
     </div>
     <div class="flex w-full h-calc z-10 absolute top-200" v-show="show_document_sidebar">
-      <DocumentSidebar @select-document="(document)=> {documentSelected(document)}" ref="docside"></DocumentSidebar>
+      <DocumentSidebar @select-document="(document)=> {documentSelected(document)}" @document-autoselect="(documentid) => {this.$refs.rte.loadDocumentById(documentid)}" ref="docside"></DocumentSidebar>
       <div class="h-full w-full flex justify-center items-center">
         <RTE ref="rte" v-show="show_rte" @document-renamed="this.$refs.docside.load();"/>
       </div>

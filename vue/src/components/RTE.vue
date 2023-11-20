@@ -8,14 +8,12 @@ const emit = defineEmits(["document-renamed"]);
 const current_document = ref(0);
 const current_document_title = ref("Test");
 const quilleditor = ref(null);
-const token = ref(localStorage.getItem("token"));
-const user_id = ref(localStorage.getItem("user_id"));
 const socket_connection = ref(null);
 const $toast = useToast();
 const rename_mode = ref(false);
-defineExpose({loadDocument});
+const debug_mode = ref(false);
+defineExpose({loadDocument, loadDocumentById});
 onMounted(() => {
-  console.log("RTE Mounted")
 })
 
 function editorReady() {
@@ -31,19 +29,16 @@ function editorReady() {
       return;
     }
     // check the
-    if (message.code === 200 && message.action === "information") {
+    if (message.code === 200 && message.action === "information" && debug_mode.value === true) {
       $toast.info("Socket responded with success string");
     } else if (message.code === 200) {
-      console.warn("merging");
       // merge the delta of the editor (full) with the received delta
       let fulldelta = quilleditor.value.getContents();
       let newdelta = fulldelta.compose(new Delta(message.payload));
-      console.log("New Delta: " + newdelta);
       quilleditor.value.setContents(newdelta, "api");
     } else {
       $toast.error("Received invalid answer");
     }
-    console.log(message)
   }
   socket_connection.value.onopen = () => {
     $toast.info("Socket connection established");
@@ -67,18 +62,17 @@ function resetQuill() {
 function loadDocument(doc) {
   //load the document and integrate all existing deltas from the db into the editor
   resetQuill();
-  console.log(doc);
-  console.log(user_id.value);
   current_document.value = doc.document_id;
   current_document_title.value = doc.document_title;
   let data = JSON.stringify({
     token: localStorage.getItem("token"),
     document_selection: current_document.value
   });
-  console.log(data)
   // send the json to the socket
   socket_connection.value.send(data);
-  $toast.success("Document selected for live session")
+  if (debug_mode.value === true) {
+    $toast.success("Document selected for live session")
+  }
   let tempurl = "http://localhost:10001/deltas/" + doc.document_id;
   axios({
     method: "get",
@@ -88,7 +82,7 @@ function loadDocument(doc) {
     }
   }).then((res) => {
     // if there are no deltas, just use a blank editor
-    if (res.data.length === 0) {
+    if (res.status === 404) {
       console.log("no deltas");
     }
     let deltas = res.data;
@@ -101,8 +95,31 @@ function loadDocument(doc) {
     // set the editor contents to the newdelta
     quilleditor.value.setContents(newdelta, "api");
     $toast.success("Document loaded");
-  }).catch(() => {
-    console.log("error");
+  }).catch((err) => {
+    if (err.response.status === 404) {
+      console.log("There are probably no deltas, so just use a blank editor");
+    } else {
+      console.log(err);
+      $toast.error("Something went wrong while loading the document");
+    }
+  });
+}
+
+function loadDocumentById(id) {
+  // fetch the document by id
+  let tempurl = "http://localhost:10001/document/" + id;
+  axios({
+    method: "get",
+    url: tempurl,
+    headers: {
+      "X-Auth-Token": localStorage.getItem("token")
+    }
+  }).then((res) => {
+    console.log(res.data);
+    let document = res.data;
+    loadDocument(document);
+  }).catch((err) => {
+    console.log(err);
   });
 }
 
@@ -113,11 +130,10 @@ function editorChanged(delta) {
     return;
   }
   let data = JSON.stringify({
-    token: token.value,
+    token: localStorage.getItem("token"),
     document_id: current_document.value,
     payload: delta.delta
   });
-  console.log(data)
   socket_connection.value.send(data);
 }
 
@@ -149,7 +165,7 @@ function handleRename() {
   <div class="flex flex-col w-full h-full text-white">
     <div class="flex justify-start items-center gap-5">
       <input class="text-2xl m-5 w-1/2 bg-slate-700 rounded p-2" :placeholder="current_document_title" v-model="current_document_title" v-if="rename_mode"/>
-      <h2 v-else class="text-3xl m-5">{{ current_document_title }}</h2>
+      <h2 v-else class="text-3xl m-5">Edit: {{ current_document_title }}</h2>
       <button class="bg-blue-600 rounded p-2" @click="handleRename">Rename</button>
     </div>
     <QuillEditor @ready="editorReady" ref="quilleditor" @textChange="(delta)=> {editorChanged(delta)}"></QuillEditor>

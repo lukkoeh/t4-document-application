@@ -11,7 +11,7 @@ const current_share_doc_id = ref(0);
 const target_share_id = ref(0);
 const $toast = useToast();
 defineExpose({load});
-const emit = defineEmits(["select-document"]);
+const emit = defineEmits(["select-document", "document-autoselect"]);
 
 onMounted(() => {
 
@@ -68,11 +68,13 @@ function createDocument() {
         "X-Auth-Token": localStorage.getItem("token")
       }
     }).then((res) => {
-      console.log(res.data);
       load();
       document_dialog.value = false;
       newdocname.value = "";
       $toast.success("Document created");
+      // load the newly created document
+      let document_id = res.data.id;
+      emit("document-autoselect", document_id);
     }).catch((err) => {
       console.log(err);
     });
