@@ -8,6 +8,7 @@ defineEmits(["close-profile-view"]);
 const firstname = ref("");
 const lastname = ref("");
 const email = ref("");
+const email_saved = ref("");
 
 const editmode = ref(false);
 const editop = computed(() => {
@@ -43,6 +44,7 @@ onMounted(() => {
     firstname.value = userdata.user_firstname;
     lastname.value = userdata.user_lastname;
     email.value = userdata.user_email;
+    email_saved.value = userdata.user_email;
     $toast.info("Loaded user data");
   }).catch((err) => {
     console.log(err);
@@ -50,7 +52,6 @@ onMounted(() => {
 })
 
 function save() {
-  console.log("save")
   if (!localStorage.getItem("token")) {
     return;
   }
@@ -70,6 +71,9 @@ function save() {
     console.log(res.data);
     $toast.success("Saved user data");
   }).catch((err) => {
+    $toast.error("Something went wrong")
+    console.log(email_saved.value);
+    email.value = email_saved.value;
     console.log(err);
   });
 }
