@@ -30,6 +30,15 @@ services:
     build: ./server/
     ports:
       - "10002:8082"
+  swaggerui:
+    image: swaggerapi/swagger-ui
+    container_name: t4app-swaggerui.docker
+    ports:
+      - "10004:8080"
+    volumes:
+      - ./api/API-Definition.yaml:/api/swagger.yaml
+    environment:
+        - SWAGGER_JSON=/api/swagger.yaml
 networks:
   default:
     name: t4application
