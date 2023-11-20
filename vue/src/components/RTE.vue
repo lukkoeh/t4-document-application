@@ -70,7 +70,7 @@ function loadDocument(doc) {
   current_document.value = doc.document_id;
   current_document_title.value = doc.document_title;
   let data = JSON.stringify({
-    token: token.value,
+    token: localStorage.getItem("token"),
     document_selection: current_document.value
   });
   console.log(data)
@@ -82,7 +82,7 @@ function loadDocument(doc) {
     method: "get",
     url: tempurl,
     headers: {
-      "X-Auth-Token": token.value
+      "X-Auth-Token": localStorage.getItem("token")
     }
   }).then((res) => {
     // if there are no deltas, just use a blank editor
