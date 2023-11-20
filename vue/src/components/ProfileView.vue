@@ -80,6 +80,7 @@ function updatePassword() {
     return;
   }
   if (new_pw.value !== new_pw_confirm.value) {
+    $toast.error("New passwords do not match");
     return;
   }
   let tempurl = "http://localhost:10001/auth/password/" + localStorage.getItem("user_id");
@@ -98,7 +99,16 @@ function updatePassword() {
     passwordchange.value = false;
     $toast.success("Password updated");
   }).catch((err) => {
-    console.log(err);
+    // if 401, toast error that old pw is incorrect
+    if (err.response.status === 400) {
+      $toast.error("Old password is incorrect");
+      return;
+    }
+    else {
+      $toast.error("Something went wrong");
+      console.log(err);
+      return;
+    }
   });
 }
 
@@ -133,8 +143,8 @@ function handleAccountDeletion() {
       <h2 class="text-3xl text-white mb-5">Change Password</h2>
       <div class="flex flex-col gap-5">
         <input class="p-3 text-white bg-slate-700 w-full" v-model="old_pw" placeholder="Old password"/>
-        <input class="p-3 text-white bg-slate-700 w-full" v-model="new_pw" placeholder="New password"/>
-        <input class="p-3 text-white bg-slate-700 w-full" v-model="new_pw_confirm" placeholder="Confirm new password"/>
+        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw" placeholder="New password" :class="pw_match"/>
+        <input class="p-3 text-white bg-slate-700 w-full" type="password" v-model="new_pw_confirm" placeholder="Confirm new password" :class="pw_match"/>
       </div>
       <div class="absolute bottom-5 right-5 flex justify-between gap-5 w-1/3">
         <button @click="passwordchange = !passwordchange" class="bg-blue-600 p-3 rounded w-full">Cancel</button>
