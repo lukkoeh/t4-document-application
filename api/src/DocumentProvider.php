@@ -99,7 +99,8 @@ class DocumentProvider
         AuthenticationProvider::validatetoken($token);
         $db_connection = DatabaseSingleton::getInstance();
         $user_id = AuthenticationProvider::getUserIdByToken($token);
-        $result = $db_connection->perform_query("UPDATE t4_documents SET document_title = ? WHERE document_owner = ? AND document_id = ?", [$newtitle, $user_id, $document_id]);
+        // update the document for shared as well as not shared documents
+        $result = $db_connection->perform_query("UPDATE t4_documents SET document_title = ? WHERE document_id IN (SELECT document_id FROM t4_shared WHERE user_id = ?) AND document_id = ?", [$newtitle, $user_id, $document_id]);
         if ($result) {
             $r = new Response("200", ["message" => "Document updated"]);
         } else {
