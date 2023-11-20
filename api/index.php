@@ -202,7 +202,7 @@ switch ($route[0]) {
                     break;
                 case "PATCH":
                     // PATCH /document/{id}
-                    parse_str(file_get_contents('php://input'), $_PATCH);
+                    $_PATCH = json_decode(file_get_contents('php://input'), true);
                     if (!isset($_SERVER["HTTP_X_AUTH_TOKEN"])) {
                         $res = new Response("400", ["message" => "You performed a malformed request"]);
                         ResponseController::respondJson($res);
@@ -319,7 +319,7 @@ switch ($route[0]) {
                         $res = new Response("400", ["message" => "You performed a malformed request"]);
                         ResponseController::respondJson($res);
                     }
-                    parse_str(file_get_contents('php://input'), $_PATCH);
+                    $_PATCH = json_decode(file_get_contents('php://input'), true);
                     $auth_token = $_SERVER["HTTP_X_AUTH_TOKEN"];
                     $delta = new DeltaProvider();
                     try {

@@ -11,10 +11,12 @@ const token = ref(localStorage.getItem("token"));
 const user_id = ref(localStorage.getItem("user_id"));
 const socket_connection = ref(null);
 const $toast = useToast();
+const rename_mode = ref(false);
 defineExpose({loadDocument});
-onMounted(()=> {
+onMounted(() => {
   console.log("RTE Mounted")
 })
+
 function editorReady() {
   quilleditor.value.setContents(new Delta(), "api");
   socket_connection.value = new WebSocket("ws://localhost:10002");
@@ -37,8 +39,7 @@ function editorReady() {
       let newdelta = fulldelta.compose(new Delta(message.payload));
       console.log("New Delta: " + newdelta);
       quilleditor.value.setContents(newdelta, "api");
-    }
-    else {
+    } else {
       $toast.error("Received invalid answer");
     }
     console.log(message)
@@ -118,11 +119,37 @@ function editorChanged(delta) {
   console.log(data)
   socket_connection.value.send(data);
 }
+
+function handleRename() {
+  rename_mode.value = !rename_mode.value;
+  if (!rename_mode.value) {
+    let tempurl = "http://localhost:10001/document/" + current_document.value;
+    axios({
+      method: "patch",
+      url: tempurl,
+      data: {
+        title: current_document_title.value
+      },
+      headers: {
+        "X-Auth-Token": localStorage.getItem("token")
+      }
+    }).then((res) => {
+      console.log(res.data);
+      $toast.success("Document renamed");
+    }).catch((err) => {
+      console.log(err);
+    });
+  }
+}
 </script>
 
 <template>
   <div class="flex flex-col w-full h-full text-white">
-    <h1 class="text-3xl m-5">Editing Document: {{ current_document_title }}</h1>
+    <div class="flex justify-start items-center gap-5">
+      <input class="text-2xl m-5 w-1/2 bg-slate-700 rounded p-2" :placeholder="current_document_title" v-model="current_document_title" v-if="rename_mode"/>
+      <h2 v-else class="text-3xl m-5">{{ current_document_title }}</h2>
+      <button class="bg-blue-600 rounded p-2" @click="handleRename">Rename</button>
+    </div>
     <QuillEditor @ready="editorReady" ref="quilleditor" @textChange="(delta)=> {editorChanged(delta)}"></QuillEditor>
   </div>
 </template>

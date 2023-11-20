@@ -26,6 +26,7 @@ function logoutuser() {
   $toast.success("Logged out");
   show_login.value = true;
   logged_in.value = false;
+  window.location.reload();
 }
 
 function documentSelected(document) {
