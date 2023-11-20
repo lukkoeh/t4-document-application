@@ -65,28 +65,30 @@ const loginform = ref(false);
 
 <template>
   <div class="w-screen h-screen flex justify-center items-center fixed top-0 left-0 z-40 before-shadow">
-    <div class="w-1/2 flex flex-col z-50">
-      <div class="flex items-center justify-evenly w-full bg-slate-700 text-white">
-        <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': loginform }" @click="loginform = true">Login</h2>
-        <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': !loginform }" @click="loginform = false">Register</h2>
-      </div>
-      <!-- Login -->
-      <div v-if="loginform" class="bg-slate-800 text-white w-full h-full text-center p-10 flex flex-col justify-center items-center gap-5">
-        <h1 class="text-3xl font-bold">Login</h1>
-        <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
-        <input type="password" class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
-        <button @click="login" class="bg-blue-600 w-1/2 p-3">Login</button>
-        <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
-      </div>
-      <!-- Register -->
-      <div v-else class="bg-slate-800 text-white w-full h-full text-center p-10 flex flex-col justify-center items-center gap-5">
-        <h1 class="text-3xl font-bold">Register</h1>
-        <input class="w-1/2 text-black p-3" placeholder="First name" v-model="firstname"/>
-        <input class="w-1/2 text-black p-3" placeholder="Last name" v-model="lastname"/>
-        <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
-        <input class="w-1/2 text-black p-3" type="password" placeholder="password" v-model="password"/>
-        <button @click="register" class="bg-blue-600 w-1/2 p-3">Register</button>
-        <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
+    <div class="flex flex-col w-1/2 h-4/5">
+      <div class="w-full flex flex-col z-50">
+        <div class="flex items-center justify-evenly w-full bg-slate-700 text-white">
+          <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': loginform }" @click="loginform = true">Login</h2>
+          <h2 class="p-5 w-full text-center" :class="{ 'bg-slate-800': !loginform }" @click="loginform = false">Register</h2>
+        </div>
+        <!-- Login -->
+        <div v-if="loginform" class="bg-slate-800 text-white w-full text-center p-10 flex flex-col justify-center items-center gap-5">
+          <h1 class="text-3xl font-bold">Login</h1>
+          <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
+          <input type="password" class="w-1/2 text-black p-3" placeholder="password" v-model="password"/>
+          <button @click="login" class="bg-blue-600 w-1/2 p-3">Login</button>
+          <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
+        </div>
+        <!-- Register -->
+        <div v-else class="bg-slate-800 text-white w-full text-center p-10 flex flex-col justify-center items-center gap-5">
+          <h1 class="text-3xl font-bold">Register</h1>
+          <input class="w-1/2 text-black p-3" placeholder="First name" v-model="firstname"/>
+          <input class="w-1/2 text-black p-3" placeholder="Last name" v-model="lastname"/>
+          <input class="w-1/2 text-black p-3" placeholder="email" v-model="email"/>
+          <input class="w-1/2 text-black p-3" type="password" placeholder="password" v-model="password"/>
+          <button @click="register" class="bg-blue-600 w-1/2 p-3">Register</button>
+          <button @click="$emit('close-login-widget')" class="bg-slate-700 w-1/2 p-3">Close</button>
+        </div>
       </div>
     </div>
   </div>
