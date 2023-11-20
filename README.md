@@ -39,6 +39,8 @@ This will install the following services via docker compose:
 ### Where do I find the Database Layout?
 The database layout is located at './layout.sql' and can be imported manually.
 
+**Note:** Usually the database layout is automatically created on docker compose up.
+
 ### Where can I access this application?
 The application is accessible via http://localhost:10000
 
@@ -48,9 +50,20 @@ The WebSocket Server is accessible via http://localhost:10002
 
 The database is accessible via http://localhost:10003
 
+Make sure that port forwarding to docker works correctly on your system.
+
 ### How do I edit the database configuration?
 The database configuration is located at:
 - ./api/src/DatabaseSingleton.php
 - ./server/src/DatabaseSingleton.php
 
 Edit the static values so that it fits your needs. Make sure that the SocketServer and the API use the same database.
+
+### Database connection troubleshooting
+If you have trouble connecting to the database, try one of the following:
+1. Does your database container run?
+2. Does host.docker.internal resolve to your docker host inside containers?
+3. Does your database container have the correct port forwarding?
+4. Does your database container have the correct network?
+5. Does your database container have the correct environment variables?
+6. Restart your computer and try again...
