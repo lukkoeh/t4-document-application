@@ -25,10 +25,14 @@ To run this application, docker is the only supported way. However, there are ce
 - Docker
 - Docker Compose
 - Internet Connection
+
+### Platform Compatibility
+This application was tested on the following platforms:
+- Windows 11 Pro (23H2) - Docker Desktop 4.25.0 - WSL Integration
 ### Run the application
 Running the application via docker is made very easy on purpose. Just run:
-```bash
-docker-compose up -d
+```powershell
+docker compose up -d
 ```
 This will install the following services via docker compose:
 1. A Container for the Frontend (node:18)
