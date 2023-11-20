@@ -59,6 +59,7 @@ function register() {
     // instantly obtain a token for the newly created user
     login();
   }).catch((err) => {
+    $toast.error("Registration failed, please try again. Maybe your Email is already in use?")
     console.log(err);
   });
 }

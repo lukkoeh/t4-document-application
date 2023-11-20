@@ -134,14 +134,14 @@ function changeDocument(doc) {
 
 <template>
   <div class="w-1/5 h-full text-center text-white py-10 flex flex-col gap-5 items-center bg-slate-700">
-    <h1 class="text-2xl">Your Documents</h1>
+    <h1 class="text-xl mb-5 bg-slate-900 w-4/5 p-5 rounded">Your Documents</h1>
     <div class="overflow-y-scroll h-4/5 w-full flex flex-col items-center gap-5 scrollbar-hide">
-      <div @click="changeDocument(document)" v-for="document in documents" :key="document.document_id" class="w-4/5 bg-slate-900 rounded-2xl p-5 flex flex-col gap-2">
+      <div @click="changeDocument(document)" v-for="document in documents" :key="document.document_id" class="w-4/5 bg-slate-900 rounded flex flex-col gap-2 p-5">
         <p>{{ document.document_title }}</p>
         <p>{{ document.document_created }}</p>
-        <div class="w-full flex justify-end gap-2">
-          <button :docid="document.document_id" @click="removeDocument(document.document_id)" class="bg-red-600 rounded p-1 w-1/3 min-w-fit">Delete</button>
-          <button :docid="document.document_id" @click="share_dialog = true; current_share_doc_id = document.document_id;" class="bg-blue-600 rounded p-1 w-1/3 min-w-fit">Share</button>
+        <div class="w-full flex justify-center gap-2 relative h-1/3">
+          <button :docid="document.document_id" @click="removeDocument(document.document_id)" class="bg-red-600 rounded p-1 w-full h-full">Delete</button>
+          <button :docid="document.document_id" @click="share_dialog = true; current_share_doc_id = document.document_id;" class="bg-blue-600 rounded p-1 w-full h-full">Share</button>
         </div>
       </div>
     </div>

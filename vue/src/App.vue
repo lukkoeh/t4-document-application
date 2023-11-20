@@ -40,11 +40,11 @@ function documentSelected(document) {
 <template>
   <div class="w-full h-screen bg-slate-900">
     <div class="w-full bg-slate-800 flex justify-between items-center h-100">
-      <h1 class="text-3xl p-5 text-white">T4-Documents</h1>
-      <div class="text-xl text-white flex justify-center items-center gap-5 mr-5">
-        <button @click="show_profile_view = !show_profile_view" class="bg-blue-600 rounded p-2">Profile</button>
-        <button v-if="logged_in" @click="logoutuser" class="bg-red-600 rounded p-2">Logout</button>
-        <button v-else @click="show_login = !show_login" class="bg-blue-600 rounded p-2">Login/Register</button>
+      <h1 class="text-2xl p-5 text-white">T4-Documents</h1>
+      <div class="text-white flex justify-center items-center gap-5 mr-5">
+        <button @click="show_profile_view = !show_profile_view" class="bg-blue-600 rounded px-8 py-2">Profile</button>
+        <button v-if="logged_in" @click="logoutuser" class="bg-red-600 rounded px-8 py-2">Logout</button>
+        <button v-else @click="show_login = !show_login" class="bg-blue-600 rounded px-8 py-2">Login/Register</button>
       </div>
     </div>
     <div class="flex w-full h-calc z-10 absolute top-200" v-show="show_document_sidebar">
