@@ -1,0 +1,35 @@
+version: "1.0"
+services:
+  database:
+    image: mariadb:latest
+    container_name: t4app-db.docker
+    ports:
+      - "10003:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1234
+      - MYSQL_DATABASE=t4api
+      - MYSQL_USER=t4api
+      - MYSQL_PASSWORD=t4api1234
+      - TZ=Europe/Berlin
+    volumes:
+      - ./layout.sql/:/docker-entrypoint-initdb.d/init.sql
+  frontend:
+    build: ./vue/
+    container_name: frontend.docker
+    ports:
+      - "10000:8080"
+  api:
+    container_name: t4app-api.docker
+    build: ./api/
+    ports:
+      - "10001:80"
+    volumes:
+      - ./api:/var/www/html
+  socket:
+    container_name: t4app-socket.docker
+    build: ./server/
+    ports:
+      - "10002:8082"
+networks:
+  default:
+    name: t4application
