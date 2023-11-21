@@ -2,7 +2,6 @@
 import {ref, defineExpose, defineEmits, onMounted} from "vue";
 import axios from "axios";
 import {useToast} from "vue-toast-notification";
-
 const documents = ref({});
 const newdocname = ref("");
 const document_dialog = ref(false);
@@ -10,14 +9,21 @@ const share_dialog = ref(false);
 const current_share_doc_id = ref(0);
 const target_share_id = ref(0);
 const $toast = useToast();
+const user_id = ref("");
 defineExpose({load});
 const emit = defineEmits(["select-document", "document-autoselect"]);
+function is_not_shared(owner) {
+  return owner != user_id.value;
+}
 
 onMounted(() => {
 
   // if logged in
   if (localStorage.getItem("token")) {
     load();
+  }
+  if (localStorage.getItem("user_id")) {
+    user_id.value = localStorage.getItem("user_id");
   }
 });
 
@@ -138,6 +144,7 @@ function changeDocument(doc) {
     <div class="overflow-y-scroll h-4/5 w-full flex flex-col items-center gap-5 scrollbar-hide">
       <div @click="changeDocument(document)" v-for="document in documents" :key="document.document_id" class="w-4/5 bg-slate-900 rounded flex flex-col gap-2 p-5">
         <p>{{ document.document_title }}</p>
+        <p v-if="is_not_shared(document.document_owner)" class="px-3 py-1 rounded bg-green-600">shared by {{document.document_owner}}</p>
         <p>{{ document.document_created }}</p>
         <div class="w-full flex justify-center gap-2 relative h-1/3">
           <button :docid="document.document_id" @click="removeDocument(document.document_id)" class="bg-red-600 rounded p-1 w-full h-full">Delete</button>
