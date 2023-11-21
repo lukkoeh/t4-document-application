@@ -5,6 +5,11 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+      require('tailwindcss-retina')
+  ],
+  variants: {
+    fontweight: ['retina'],
+  }
 }
 
