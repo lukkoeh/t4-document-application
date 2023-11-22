@@ -10,13 +10,13 @@ class DatabaseSingleton
 {
     private static $instance = null; # empty instance by default
     private $connection; # connection of the instance
-    private static $host = "host.docker.internal";
+    private static $host = "t4app-db.docker";
     private static $db = "t4api";
     private static $user = "t4api";
 
     private static $password = "t4api1234";
 
-    private static $port = 10003;
+    private static $port = 3306;
 
     /*
      * This constructor creates a DB object and connects to the database, the instance is saved in the connection variable
