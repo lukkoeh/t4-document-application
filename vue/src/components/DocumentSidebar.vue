@@ -59,6 +59,9 @@ function createDocument() {
   // create a new document
   // if the user is logged in
   if (localStorage.getItem("token")) {
+    if (localStorage.getItem("user_id")) {
+      user_id.value = localStorage.getItem("user_id");
+    }
     // request the documents
     let tempurl = "http://localhost:10001/document/";
     let formdata = new FormData();
